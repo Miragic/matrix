@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+		PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+		"http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<!--
+   Mybatis生成Mapper配置文件
+   1，cmd切换至该xml所在项目根目录，即pom所在目录
+   2，mvn mybatis-generator:generate
+ -->
+<generatorConfiguration>
+	<!--targetRuntime：代码风格；（MyBatis3、MyBatis3Simple、MyBatis3DynamicSql）-->
+	<context id="default" targetRuntime="MyBatis3">
+		<property name="autoDelimitKeywords" value="true"/>
+		<property name="beginningDelimiter" value="`"/><!-- beginningDelimiter和endingDelimiter：指明数据库的用于标记数据库对象名的符号，比如ORACLE就是双引号，MYSQL默认是`反引号； -->
+		<property name="endingDelimiter" value="`"/>
+		<property name="javaFileEncoding" value="UTF-8"/>
+		<!--实体类序列化插件-->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+		<!--<plugin type="com.mcloud.matrix.outstock.generator.MapperExtPluginAdapter"/>-->
+
+		<commentGenerator>
+			<property name="suppressDate" value="true"/><!--阻止生成的注释包含时间戳-->
+			<property name="suppressAllComments" value="false"/><!--是否不生成任何注解-->
+			<property name="addRemarkComments" value="true"/><!--注释中添加数据库的注释-->
+		</commentGenerator>
+
+		<!--数据库相关设置-->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+						connectionURL="jdbc:mysql://localhost:3306/outstock"
+						userId="root"
+						password="miragic000">
+			<property name="nullCatalogMeansCurrent" value="true"/>
+		</jdbcConnection>
+
+		<!--是否强制DECIMAL和NUMERIC类型的字段转换为Java类型的java.math.BigDecimal-->
+		<!--<javaTypeResolver type="com.pcloud.plugins.mybatis.generator.TinyintTypeResolver">
+			<property name="forceBigDecimals" value="false"/>
+		</javaTypeResolver>-->
+
+		<!--
+        targetPackage：实体类包名；（生成的类要放的包，真实的包受enableSubPackages属性控制）
+        targetProject：实体类位置；（目标项目，指定一个存在的目录下，生成的内容会放到指定目录中，如果目录不存在，MBG不会自动建目录）
+        -->
+		<javaModelGenerator targetPackage="com.mcloud.matrix.outstock.mybatis.entity"
+							targetProject="src/main/java">
+			<property name="enableSubPackages"
+					  value="true"/><!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
+			<property name="trimStrings" value="false"/><!-- 设置是否在getter方法中，对String类型字段调用trim()方法 -->
+		</javaModelGenerator>
+
+		<!-- 生成SQL map的XML文件生成器，
+        注意，在Mybatis3之后，我们可以使用mapper.xml文件+Mapper接口（或者不用mapper接口），
+            或者只使用Mapper接口+Annotation，所以，如果 javaClientGenerator 配置中配置了需要生成XML的话，这个元素就必须配置
+        targetPackage/targetProject:同 javaModelGenerator
+        -->
+		<sqlMapGenerator targetPackage="mappers" targetProject="src/main/resources">
+			<property name="enableSubPackages" value="true"/>
+		</sqlMapGenerator>
+
+		<!-- 对于mybatis来说，即生成Mapper接口，注意，如果没有配置该元素，那么默认不会生成Mapper接口
+        targetPackage/targetProject:同javaModelGenerator
+        type：选择怎么生成mapper接口（在MyBatis3/MyBatis3Simple下）：
+            1，ANNOTATEDMAPPER：会生成使用Mapper接口+Annotation的方式创建（SQL生成在annotation中），不会生成对应的XML；
+            2，MIXEDMAPPER：使用混合配置，会生成Mapper接口，并适当添加合适的Annotation，但是XML会生成在XML中；
+            3，XMLMAPPER：会生成Mapper接口，接口完全依赖XML；
+        注意，如果context是MyBatis3Simple：只支持ANNOTATEDMAPPER和XMLMAPPER
+        -->
+		<javaClientGenerator type="XMLMAPPER" targetPackage="com.mcloud.matrix.outstock.mybatis.mapper"
+							 targetProject="src/main/java">
+			<property name="enableSubPackages" value="true"/>
+			<!-- 可以为所有生成的接口添加一个父接口，但是MBG只负责生成，不负责检查
+        <property name="rootInterface" value=""/>
+         -->
+		</javaClientGenerator>
+
+		<!--表名配置，tableName：数据库表名；domainObjectName：实体类表名-->
+
+<!--		<table tableName="task_message_record">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+			<columnOverride column="content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+		</table>-->
+		<table tableName="t_gm_outstock_sku">
+			<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		</table>
+	</context>
+</generatorConfiguration>

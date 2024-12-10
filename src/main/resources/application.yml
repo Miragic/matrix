@@ -1,0 +1,24 @@
+server:
+  port: 19001  # 端口号
+  servlet:
+    context-path: /matrix   #项目根路径
+
+
+spring:
+  # 项目名称
+  application:
+    name: matrix
+  # Mysql配置
+  datasource:
+    driver-class-name:  com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/outstock?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: miragic000
+  main:
+    banner-mode: console
+# Mybatis配置
+mybatis:
+  mapper-locations: classpath:mappers/*.xml #指定Mybatis的Mapper文件
+  #type-aliases-package: com.mcloud.demoone.*.entity  #指定Mybatis的实体目录
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
